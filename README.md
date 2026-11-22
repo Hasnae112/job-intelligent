@@ -46,7 +46,7 @@ Schéma en étoile (méthode Kimball) : une table de faits et cinq dimensions.
 - **`fact_offres`** : une ligne par offre (type de contrat, description, salaires min/max, date de chargement)
 - **`dim_entreprise`**, **`dim_localisation`**, **`dim_metier`**, **`dim_date`**, **`dim_source`**
 
-Détails dans [`scripts/sql/00_modele_dwh.md`](scripts/sql/00_modele_dwh.md) et [`scripts/sql/PHASE_4_DOCUMENTATION.md`](scripts/sql/PHASE_4_DOCUMENTATION.md). Le script de création est dans [`scripts/sql/01_create_tables.sql`](scripts/sql/01_create_tables.sql).
+Détails dans [`00_modele_dwh.md`](job-intelligent/scripts/sql/00_modele_dwh.md) et [`PHASE_4_DOCUMENTATION.md`](job-intelligent/scripts/sql/PHASE_4_DOCUMENTATION.md). Le script de création est dans [`01_create_tables.sql`](job-intelligent/scripts/sql/01_create_tables.sql).
 
 ## Technologies
 
@@ -56,20 +56,22 @@ Python, Apache Airflow 2.6, PostgreSQL 13, Docker Compose, pandas, Requests, Bea
 
 ```
 .
-├── dags/
-│   ├── test_environment.py        # Test de l'environnement
-│   ├── init_dwh.py                # Création du DWH
-│   └── etl_jobs_pipeline.py       # Pipeline ETL principal
-├── scripts/
-│   ├── scrapers/
-│   │   ├── scrape_rekrute.py      # Scraper Rekrute
-│   │   └── test_france_travail.py # Appel API France Travail
-│   └── sql/                       # Schéma et documentation du DWH
-├── data/                          # raw/ et processed/ (non versionnés)
-├── notebooks/  plugins/           # Dossiers réservés
-├── docker-compose.yml
-└── .env.example                   # Modèle de configuration
+├── README.md
+├── env.example                        # Modèle de configuration (à copier en .env)
+└── job-intelligent/                   # Projet Docker Compose
+    ├── docker-compose.yml
+    ├── dags/
+    │   ├── test_environment.py        # Test de l'environnement
+    │   ├── init_dwh.py                # Création du DWH
+    │   └── etl_jobs_pipeline.py       # Pipeline ETL principal
+    └── scripts/
+        ├── scrapers/
+        │   ├── scrape_rekrute.py      # Scraper Rekrute
+        │   └── test_france_travail.py # Appel API France Travail
+        └── sql/                       # Schéma et documentation du DWH
 ```
+
+Les dossiers `data/` (`raw/`, `processed/`) ne sont pas versionnés.
 
 ## Installation
 
@@ -82,13 +84,13 @@ Python, Apache Airflow 2.6, PostgreSQL 13, Docker Compose, pandas, Requests, Bea
 
 ```bash
 git clone https://github.com/Hasnae112/job-intelligent.git
-cd job-intelligent
-cp .env.example .env      # puis renseigner vos valeurs
+cd job-intelligent/job-intelligent     # dossier contenant docker-compose.yml
+cp ../env.example .env                 # puis renseigner vos valeurs
 ```
 
 ### 2. Préparer les données
 
-Les fichiers de `data/raw/` ne sont pas versionnés (taille). Ils sont à générer ou à télécharger :
+Les fichiers de `data/raw/` ne sont pas versionnés (taille). Ils sont à générer ou à télécharger (depuis `job-intelligent/job-intelligent/`) :
 
 ```bash
 pip install requests beautifulsoup4 pandas python-dotenv
@@ -150,4 +152,4 @@ docker exec -it postgres_dwh_jobint psql -U dwh_user -d jobs_dwh \
 ## Auteure
 
 **Hasnae Elballaoui**, élève-ingénieure en Intelligence Artificielle et Transformation Digitale (ENSAH)
-[LinkedIn](https://linkedin.com/in/hasnae-elballaoui-312209256) · [GitHub](https://github.com/Hasnae112)
+[LinkedIn](https://www.linkedin.com/in/hasnae-elballaoui-312209256) · [GitHub](https://github.com/Hasnae112)
